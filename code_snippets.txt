@@ -1,0 +1,51 @@
+ConsoleApp
+1) Build - show no exe.
+	- run with command: dotnet .\ConsoleApp.dll
+2) Build - VS - get self contained
+	- change to "Release"
+	- edit csproj:
+	<RuntimeIdentifiers>win10-x64;osx.10.11-x64</RuntimeIdentifiers>
+	- Build Solution
+	- Setup publish
+		- Choose traget
+	- Error - Visual Studio 2017 bug
+3) Build - CLI - self contained
+	- dotnet publish --self-contained -r win10-x64 -c Release
+	
+	
+Console transistion:
+1) Install Microsoft.AspNetCore.All
+2) Program.cs:
+  static void Main(string[] args)
+        {
+            Console.WriteLine("Hello World!");
+            BuildWebHost(args).Run();
+        }
+
+        public static IWebHost BuildWebHost(string[] args) =>
+            WebHost.CreateDefaultBuilder(args)
+                .UseStartup<Startup>()
+                .Build();
+				
+3) Startup.cs
+public class Startup
+    {
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddRouting();
+        }
+
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        {
+            if (env.IsDevelopment()) {
+                app.UseDeveloperExceptionPage();
+            }
+
+            app.Run(async (context) => {
+                await context.Response.WriteAsync("Hello World!");
+            });
+        }
+    }
+	
+az webapp create --resource-group DotNetCoreTraining --plan CoreTrainingLinux --name WebCoreTrainingLinux --deployment-container-image-name microsoft/dotnetcore	
