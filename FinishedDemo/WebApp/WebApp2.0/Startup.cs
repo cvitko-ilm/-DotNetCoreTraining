@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using WebApp2._0.Middleware;
 using Microsoft.AspNetCore.Http;
+using WebApp2._0.Services;
 
 namespace WebApp2._0
 {
@@ -24,6 +25,11 @@ namespace WebApp2._0
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+
+            //services.AddScoped<IDataService, DataService>();
+            //services.AddTransient<IDataService, DataService>();
+            //services.AddSingleton<IDataService, DataService>();
+            services.AddScoped<IDataService>(sp => new DataService());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

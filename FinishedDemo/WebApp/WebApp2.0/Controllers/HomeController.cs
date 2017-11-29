@@ -5,11 +5,19 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using WebApp2._0.Models;
+using WebApp2._0.Services;
 
 namespace WebApp2._0.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly IDataService _dataService;
+
+        public HomeController(IDataService dataServices)
+        {
+            _dataService = dataServices;
+        }
+
         public IActionResult Index()
         {
             return View();
@@ -24,7 +32,7 @@ namespace WebApp2._0.Controllers
 
         public IActionResult Contact()
         {
-            ViewData["Message"] = "Your contact page.";
+            ViewData["Message"] = $"Your contact page. Name:  {_dataService.GetName()}";
 
             return View();
         }
