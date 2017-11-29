@@ -13,9 +13,10 @@ namespace WebApp2._0.Controllers
     {
         private readonly IDataService _dataService;
 
-        public HomeController(IDataService dataServices)
+        public HomeController(IDataService dataServices, IServiceProvider serviceProvider)
         {
             _dataService = dataServices;
+            //_dataService = (IDataService)serviceProvider.GetService(typeof(IDataService));
         }
 
         public IActionResult Index()
@@ -32,7 +33,9 @@ namespace WebApp2._0.Controllers
 
         public IActionResult Contact()
         {
-            ViewData["Message"] = $"Your contact page. Name:  {_dataService.GetName()}";
+            var name = _dataService.GetName();
+            //var name = ((IDataService)this.HttpContext.RequestServices.GetService(typeof(IDataService))).GetName();
+            ViewData["Message"] = $"Your contact page. Name:  {name}";
 
             return View();
         }
