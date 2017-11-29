@@ -21,6 +21,7 @@ namespace WebApp2._0
             WebHost.CreateDefaultBuilder(args)
                 .ConfigureAppConfiguration((builderContext, config) =>
                 {
+                    // add in custom setting file that will override the default appsettings.json file
                     IHostingEnvironment env = builderContext.HostingEnvironment;
 
                     config.AddJsonFile("configSettings.json", optional: false);

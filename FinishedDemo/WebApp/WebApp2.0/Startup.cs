@@ -47,6 +47,7 @@ namespace WebApp2._0
 
             app.UseEncodeUri();
 
+            // Show custom middleware inline
             app.Use(async (context, next) => {
 
                 await next();
@@ -79,6 +80,7 @@ namespace WebApp2._0
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 
+            // Basic middleware showing Run statement
             //app.Use(async (context, next) => {
 
             //    Console.Write("Why am I here?\n");
