@@ -19,6 +19,12 @@ namespace WebApp2._0
 
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+                .ConfigureAppConfiguration((builderContext, config) =>
+                {
+                    IHostingEnvironment env = builderContext.HostingEnvironment;
+
+                    config.AddJsonFile("configSettings.json", optional: false);
+                })
                 .UseStartup<Startup>()
                 .Build();
     }
