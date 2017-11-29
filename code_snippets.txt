@@ -48,4 +48,14 @@ public class Startup
         }
     }
 	
+	
+IIS integration
+1) Install IIS
+2) Install .NET Core Windows Server Hosting bundle  - https://aka.ms/dotnetcore-2-windowshosting
+3) Configure 
+	- 2.0
+		- Add Website
+		- App Pool -> Basic-> No Manged Code
+		
+	
 az webapp create --resource-group DotNetCoreTraining --plan CoreTrainingLinux --name WebCoreTrainingLinux --deployment-container-image-name microsoft/dotnetcore	
