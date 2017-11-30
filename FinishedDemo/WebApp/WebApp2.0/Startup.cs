@@ -13,14 +13,19 @@ using WebApp2._0.Models;
 using Microsoft.AspNetCore.Routing;
 using System.Diagnostics;
 using Microsoft.ApplicationInsights.Extensibility;
+using Microsoft.Extensions.FileProviders;
+using System.Reflection;
 
 namespace WebApp2._0
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        private IHostingEnvironment _hostingEnvironment;
+
+        public Startup(IConfiguration configuration, IHostingEnvironment env)
         {
             Configuration = configuration;
+            _hostingEnvironment = env;
         }
 
         public IConfiguration Configuration { get; }
@@ -40,6 +45,16 @@ namespace WebApp2._0
 
             // routing
             services.AddRouting();
+
+            //file providers
+            var physicalProvider = _hostingEnvironment.ContentRootFileProvider;
+            var embeddedProvider = new EmbeddedFileProvider(Assembly.GetEntryAssembly());
+            var compositeProvider = new CompositeFileProvider(physicalProvider, embeddedProvider);
+
+            // choose one provider to use for the app and register it
+            //services.AddSingleton<IFileProvider>(physicalProvider);
+            //services.AddSingleton<IFileProvider>(embeddedProvider);
+            services.AddSingleton<IFileProvider>(compositeProvider);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
