@@ -47,15 +47,65 @@ public class Startup
             });
         }
     }
+			
+			
+Middleware:
+1) Easy Use/Run/Map
+app.Use(async (context, next) => {
+                
+                await next();
+
+                string redirect = context.Response.Headers["X-Redirect"];
+                if (!string.IsNullOrWhiteSpace(redirect)) {
+                    context.Response.Headers.Add("X-nonsense", "pure nonsense");
+                }
+            });
+
+            app.Map("/Home/About", (app2) => {
+                app2.Use(async (context, next) => {
+                    
+                    await next();
+
+                    context.Response.Headers.Add("X-onlyAbout", "this the about page");
+                });
+            });
+			
+Settings
+ - 2.0
+	- Setting files
+		.ConfigureAppConfiguration((builderContext, config) =>
+                {
+                    IHostingEnvironment env = builderContext.HostingEnvironment;
+
+                    config.AddJsonFile("configSettings.json", optional: false);
+                })
+ - 1.0
+	- see template
 	
 	
-IIS integration
+ -Options
+ <div class="row">
+    <div class="col-md-12">
+        <p>My Name: @DataService.GetName()</p>
+        <p>Settings Option1: @ViewData["DS_Option1"]</p>
+        <p>Settings Option2: @ViewData["DS_Option2"]</p>
+        <p>Settings Change On Save Option1: @ViewData["DS_Option_Change1"]</p>
+        <p>Settings Change On Save Option2: @ViewData["DS_Option_Change2"]</p>
+    </div>
+</div>
+ 
+ 
+ IIS integration
 1) Install IIS
 2) Install .NET Core Windows Server Hosting bundle  - https://aka.ms/dotnetcore-2-windowshosting
 3) Configure 
 	- 2.0
 		- Add Website
 		- App Pool -> Basic-> No Manged Code
-		
+	- 1.1
+		- same as 2.0
+		- code needs the following:
+			-.UseKestrel().UseIISIntegration()
+ 
 	
 az webapp create --resource-group DotNetCoreTraining --plan CoreTrainingLinux --name WebCoreTrainingLinux --deployment-container-image-name microsoft/dotnetcore	

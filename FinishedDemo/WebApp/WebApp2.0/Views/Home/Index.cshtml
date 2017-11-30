@@ -16,8 +16,7 @@
         <div class="item active">
             <img src="~/images/banner1.svg" alt="ASP.NET" class="img-responsive" />
             <div class="carousel-caption" role="option">
-                <p>
-                    My Name: @DataService.GetName()
+                <p> 
                     Learn how to build ASP.NET apps that can run anywhere.
                     <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkID=525028&clcid=0x409">
                         Learn More
@@ -67,6 +66,16 @@
         <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
         <span class="sr-only">Next</span>
     </a>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <p>My Name: @DataService.GetName()</p>
+        <p>Settings Option1: @ViewData["DS_Option1"]</p>
+        <p>Settings Option2: @ViewData["DS_Option2"]</p>
+        <p>Settings Change On Save Option1: @ViewData["DS_Option_Change1"]</p>
+        <p>Settings Change On Save Option2: @ViewData["DS_Option_Change2"]</p>
+    </div>
 </div>
 
 <div class="row">

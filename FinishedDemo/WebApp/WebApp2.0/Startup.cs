@@ -9,6 +9,10 @@ using Microsoft.Extensions.DependencyInjection;
 using WebApp2._0.Middleware;
 using Microsoft.AspNetCore.Http;
 using WebApp2._0.Services;
+using WebApp2._0.Models;
+using Microsoft.AspNetCore.Routing;
+using System.Diagnostics;
+using Microsoft.ApplicationInsights.Extensibility;
 
 namespace WebApp2._0
 {
@@ -30,11 +34,20 @@ namespace WebApp2._0
             //services.AddTransient<IDataService, DataService>();
             //services.AddSingleton<IDataService, DataService>();
             services.AddScoped<IDataService>(sp => new DataService());
+
+            //Get configuration setting setup
+            services.Configure<DataSettings>(Configuration.GetSection("DataSettings"));
+
+            // routing
+            services.AddRouting();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            var configuration = app.ApplicationServices.GetService<TelemetryConfiguration>();
+            configuration.DisableTelemetry = true;
+
             if (env.IsDevelopment()) {
                 app.UseDeveloperExceptionPage();
                 app.UseBrowserLink();
@@ -49,19 +62,20 @@ namespace WebApp2._0
 
             // Show custom middleware inline
             app.Use(async (context, next) => {
-
+                
                 await next();
 
                 string redirect = context.Response.Headers["X-Redirect"];
                 if (!string.IsNullOrWhiteSpace(redirect)) {
-                    context.Response.Headers.Add("X-nonsense", "pure nonsense");
+                    //context.Response.Headers.Add("X-nonsense", "pure nonsense");
+                    Debug.WriteLine($"***** X-Redirect found value: {redirect}");
                 }
             });
 
             app.UseWhen(context => context.Request.Path.StartsWithSegments("/Home/Contact"), (app2) => {
                 app2.Use(async (context, next) => {
 
-                    context.Response.Headers.Add("X-ContactUs", "Contact Page");
+                    Debug.WriteLine($"***** Contact Page");
                     await next();
                 });
             });
@@ -69,7 +83,7 @@ namespace WebApp2._0
             app.Map("/Home/About", (app2) => {
                 app2.Use(async (context, next) => {
 
-                    context.Response.Headers.Add("X-onlyAbout", "this the about page");
+                    Debug.WriteLine($"***** About Page");
                     await next();
                 });
             });
@@ -78,6 +92,22 @@ namespace WebApp2._0
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
+            });
+
+            //custom routing
+            app.UseRouter(routes => {
+                routes.MapGet("test/{id:int}", context => {
+                    var id = context.GetRouteValue("id");
+                    return context.Response.WriteAsync($"Hi, number: {id}");
+                });
+                routes.MapGet("test/{id:alpha}", context => {
+                    var id = context.GetRouteValue("id");
+                    return context.Response.WriteAsync($"Hi, string: {id}");
+                });
+                routes.MapGet("test/{*slug}", context => {
+                    var id = context.GetRouteValue("id");
+                    return context.Response.WriteAsync("Slugs!");
+                });
             });
 
             // Basic middleware showing Run statement
