@@ -31,6 +31,11 @@ namespace WebApp2._0.Controllers
 
         public IActionResult Index()
         {
+            var viewModel = new UserModel() {
+                Name = "ViewModelName",
+                Phone = "(123) 456-7890"
+            };
+
             ViewData["DS_Option1"] = _options.Value.Option1;
             ViewData["DS_Option2"] = _options.Value.Option2;
             ViewData["DS_Option_Change1"] = _optionsChange.Value.Option1;
@@ -39,7 +44,7 @@ namespace WebApp2._0.Controllers
             ViewData["MyDataFileName"] = myDataFile.Exists ? myDataFile.PhysicalPath : string.Empty;
             IFileInfo myEmbeddedFile = _fileProvider.GetFileInfo("Embedded.MyEmbedded.txt");
             ViewData["MyEmbeddedDataName"] = myEmbeddedFile.Exists ? myEmbeddedFile.Name : string.Empty;
-            return View();
+            return View(viewModel);
         }
 
         public IActionResult About()

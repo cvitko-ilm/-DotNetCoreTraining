@@ -1,9 +1,11 @@
-﻿@{
+﻿@using WebApp2._0.Services;
+@using WebApp2._0.Models;
+@inject IDataService DataService
+@model UserModel
+
+@{
     ViewData["Title"] = "Home Page";
 }
-
-@using WebApp2._0.Services; 
-@inject IDataService DataService
 
 <div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="6000">
     <ol class="carousel-indicators">
@@ -78,6 +80,10 @@
         <p>MyData.txt Last Path: @ViewData["MyDataFileName"]</p>
         <p>MyEmbeddedDataName.txt File Name: @ViewData["MyEmbeddedDataName"]</p>
         <div><img src="StaticFiles/costs.jpg" width="200" /></div>
+        <div class="form-group">
+            <label asp-for="Name" class="control-label"></label>
+            <input asp-for="Name" class="form-control" />
+        </div>
     </div>
 </div>
 
