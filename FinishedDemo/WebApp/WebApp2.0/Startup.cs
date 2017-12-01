@@ -15,6 +15,7 @@ using System.Diagnostics;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.Extensions.FileProviders;
 using System.Reflection;
+using System.IO;
 
 namespace WebApp2._0
 {
@@ -72,6 +73,11 @@ namespace WebApp2._0
             }
 
             app.UseStaticFiles();
+
+            app.UseStaticFiles(new StaticFileOptions() {
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Files/images")),
+                RequestPath = new PathString("/StaticFiles")
+            });
 
             app.UseEncodeUri();
 
