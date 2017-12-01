@@ -1,0 +1,9 @@
+﻿
+@model IEnumerable<UserModel>
+
+<h3>Sort List</h3>
+<ul>
+    @foreach(UserModel user in Model) {
+        <li>@user.Name - @user.Phone</li>
+    }
+</ul>

@@ -8,6 +8,8 @@ using WebApp2._0.Models;
 using WebApp2._0.Services;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.AspNetCore.Http;
+using System.IO;
 
 namespace WebApp2._0.Controllers
 {
@@ -66,6 +68,28 @@ namespace WebApp2._0.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UploadFiles(List<IFormFile> files)
+        {
+            long size = files.Sum(f => f.Length);
+
+            // full path to file in temp location
+            var filePath = Path.GetTempFileName();
+
+            foreach (var formFile in files) {
+                if (formFile.Length > 0) {
+                    using (var stream = new FileStream(filePath, FileMode.Create)) {
+                        await formFile.CopyToAsync(stream);
+                    }
+                }
+            }
+
+            // process uploaded files
+            // Don't rely on or trust the FileName property without validation.
+
+            return Ok(new { count = files.Count, size, filePath });
         }
     }
 }
