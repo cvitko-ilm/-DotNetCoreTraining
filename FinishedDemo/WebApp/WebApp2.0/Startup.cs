@@ -35,7 +35,7 @@ namespace WebApp2._0
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc()
-                .AddSessionStateTempDataProvider();
+                .AddSessionStateTempDataProvider();  //TempData to session state.
 
             //services.AddScoped<IDataService, DataService>();
             //services.AddTransient<IDataService, DataService>();
@@ -58,6 +58,10 @@ namespace WebApp2._0
             //services.AddSingleton<IFileProvider>(embeddedProvider);
             services.AddSingleton<IFileProvider>(compositeProvider);
 
+            //Sesssion
+            services.AddDistributedMemoryCache();
+
+            // Session and TempData
             services.AddSession();
         }
 
@@ -82,6 +86,7 @@ namespace WebApp2._0
                 RequestPath = new PathString("/StaticFiles")
             });
 
+            // Session and TempData
             app.UseSession();
 
             app.UseEncodeUri();

@@ -20,6 +20,8 @@ namespace WebApp2._0.Controllers
         private readonly IOptionsSnapshot<DataSettings> _optionsChange;
         private readonly IFileProvider _fileProvider;
 
+        const string SessionKeyName = "SessionName";
+
         public HomeController(IDataService dataServices, IServiceProvider serviceProvider, IOptions<DataSettings> options, 
             IOptionsSnapshot<DataSettings> optionsChange, IFileProvider fileProvider)
         {
@@ -48,6 +50,7 @@ namespace WebApp2._0.Controllers
             ViewData["MyEmbeddedDataName"] = myEmbeddedFile.Exists ? myEmbeddedFile.Name : string.Empty;
 
             TempData["MyTempDataName"] = "My Temporary Data Name";
+            HttpContext.Session.SetString(SessionKeyName, "My Session Name");
 
             return View(viewModel);
         }
@@ -64,6 +67,7 @@ namespace WebApp2._0.Controllers
             var name = _dataService.GetName();
             //var name = ((IDataService)this.HttpContext.RequestServices.GetService(typeof(IDataService))).GetName();
             ViewData["Message"] = $"Your contact page. Name:  {name}";
+            ViewData["MySessionName"] = HttpContext.Session.GetString(SessionKeyName);
 
             return View();
         }
