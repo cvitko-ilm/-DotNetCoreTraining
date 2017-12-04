@@ -69,7 +69,6 @@ namespace WebApp2_0.Controllers
         {
             var name = _dataService.GetName();
             //var name = ((IDataService)this.HttpContext.RequestServices.GetService(typeof(IDataService))).GetName();
-            //ViewData["Message"] = _localizer["Your contact page"];
             ViewData["Message"] = $"{_localizer["Your contact page"]}. {_localizer["Name"]}: {name}";
             ViewData["MySessionName"] = HttpContext.Session.GetString(SessionKeyName);
             ViewData["MyContextItemName"] = HttpContext.Items["MyContextItemName"];
