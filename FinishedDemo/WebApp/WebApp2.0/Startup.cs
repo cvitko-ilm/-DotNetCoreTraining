@@ -17,6 +17,7 @@ using Microsoft.Extensions.FileProviders;
 using System.Reflection;
 using System.IO;
 using Microsoft.Extensions.Logging;
+using WebApp2._0.Logging;
 
 namespace WebApp2._0
 {
@@ -106,11 +107,12 @@ namespace WebApp2._0
 
                 string redirect = context.Response.Headers["X-Redirect"];
                 if (!string.IsNullOrWhiteSpace(redirect)) {
-                    //context.Response.Headers.Add("X-nonsense", "pure nonsense");
+                    //context.Response.Headers.Add("X-nonsense", "pure nonsense"); //will cause and issue
                     Debug.WriteLine($"***** X-Redirect found value: {redirect}");
                     _logger.LogDebug($"***** Debug: X-Redirect found value: {redirect}");
                     _logger2.LogDebug($"***** CustomCat: X-Redirect found value: {redirect}");
-
+                    _logger.ViewRequested();
+                    _logger.ViewRequestedOptions("{ key1=value1 }", 20);
                 }
             });
 
