@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Globalization;
 using Microsoft.AspNetCore.Builder;
 
-namespace WebApp2._0.Middleware
+namespace WebApp2_0.Middleware
 {
     public class RedirectUriHeaderMiddleware
     {

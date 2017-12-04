@@ -6,10 +6,10 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using WebApp2._0.Middleware;
+using WebApp2_0.Middleware;
 using Microsoft.AspNetCore.Http;
-using WebApp2._0.Services;
-using WebApp2._0.Models;
+using WebApp2_0.Services;
+using WebApp2_0.Models;
 using Microsoft.AspNetCore.Routing;
 using System.Diagnostics;
 using Microsoft.ApplicationInsights.Extensibility;
@@ -17,9 +17,10 @@ using Microsoft.Extensions.FileProviders;
 using System.Reflection;
 using System.IO;
 using Microsoft.Extensions.Logging;
-using WebApp2._0.Logging;
+using WebApp2_0.Logging;
+using System.Globalization;
 
-namespace WebApp2._0
+namespace WebApp2_0
 {
     public class Startup
     {
@@ -69,6 +70,8 @@ namespace WebApp2._0
 
             // Session and TempData
             services.AddSession();
+
+            services.AddLocalization(options => options.ResourcesPath = "Resources");
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -84,6 +87,17 @@ namespace WebApp2._0
             else {
                 app.UseExceptionHandler("/Home/Error");
             }
+
+            var supportedCultures = new[] {
+                new CultureInfo("en"),
+                new CultureInfo("fr")
+            };
+
+            app.UseRequestLocalization(new RequestLocalizationOptions {
+                DefaultRequestCulture = new Microsoft.AspNetCore.Localization.RequestCulture(supportedCultures[0]),
+                SupportedCultures = supportedCultures,
+                SupportedUICultures = supportedCultures
+            });
 
             app.UseStaticFiles();
 

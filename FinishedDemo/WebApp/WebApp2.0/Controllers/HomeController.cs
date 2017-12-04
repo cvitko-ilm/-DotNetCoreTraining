@@ -4,14 +4,15 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using WebApp2._0.Models;
-using WebApp2._0.Services;
+using WebApp2_0.Models;
+using WebApp2_0.Services;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.AspNetCore.Http;
 using System.IO;
+using Microsoft.Extensions.Localization;
 
-namespace WebApp2._0.Controllers
+namespace WebApp2_0.Controllers
 {
     public class HomeController : Controller
     {
@@ -19,11 +20,12 @@ namespace WebApp2._0.Controllers
         private readonly IOptions<DataSettings> _options;
         private readonly IOptionsSnapshot<DataSettings> _optionsChange;
         private readonly IFileProvider _fileProvider;
+        private readonly IStringLocalizer _localizer;
 
         const string SessionKeyName = "SessionName";
 
         public HomeController(IDataService dataServices, IServiceProvider serviceProvider, IOptions<DataSettings> options, 
-            IOptionsSnapshot<DataSettings> optionsChange, IFileProvider fileProvider)
+            IOptionsSnapshot<DataSettings> optionsChange, IFileProvider fileProvider, IStringLocalizer<HomeController> localizer)
         {
             _dataService = dataServices;
             //_dataService = (IDataService)serviceProvider.GetService(typeof(IDataService));
@@ -31,6 +33,7 @@ namespace WebApp2._0.Controllers
             _options = options;
             _optionsChange = optionsChange;
             _fileProvider = fileProvider;
+            _localizer = localizer;
         }
 
         public IActionResult Index()
@@ -66,7 +69,8 @@ namespace WebApp2._0.Controllers
         {
             var name = _dataService.GetName();
             //var name = ((IDataService)this.HttpContext.RequestServices.GetService(typeof(IDataService))).GetName();
-            ViewData["Message"] = $"Your contact page. Name:  {name}";
+            //ViewData["Message"] = _localizer["Your contact page"];
+            ViewData["Message"] = $"{_localizer["Your contact page"]}. {_localizer["Name"]}: {name}";
             ViewData["MySessionName"] = HttpContext.Session.GetString(SessionKeyName);
             ViewData["MyContextItemName"] = HttpContext.Items["MyContextItemName"];
 

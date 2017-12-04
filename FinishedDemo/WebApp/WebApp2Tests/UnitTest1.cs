@@ -1,5 +1,5 @@
 using System;
-using WebApp2._0.Services;
+using WebApp2_0.Services;
 using Xunit;
 
 namespace WebApp2Tests

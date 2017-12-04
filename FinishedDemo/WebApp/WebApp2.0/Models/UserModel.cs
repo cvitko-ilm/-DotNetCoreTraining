@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace WebApp2._0.Models
+namespace WebApp2_0.Models
 {
     public class UserModel
     {

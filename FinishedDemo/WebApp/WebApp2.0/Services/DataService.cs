@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace WebApp2._0.Services
+namespace WebApp2_0.Services
 {
     public interface IDataService
     {

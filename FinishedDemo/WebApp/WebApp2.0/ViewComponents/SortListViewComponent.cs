@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using WebApp2._0.Models;
+using WebApp2_0.Models;
 
-namespace WebApp2._0.ViewComponents
+namespace WebApp2_0.ViewComponents
 {
     public class SortListViewComponent : ViewComponent
     {

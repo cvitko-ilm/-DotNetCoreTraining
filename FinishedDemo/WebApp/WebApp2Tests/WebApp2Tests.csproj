@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\WebApp2.0\WebApp2.0.csproj" />
+    <ProjectReference Include="..\WebApp2.0\WebApp2_0.csproj" />
   </ItemGroup>
 
 </Project>
