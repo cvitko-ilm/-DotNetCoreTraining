@@ -93,7 +93,10 @@ namespace WebApp2._0
 
             // Show custom middleware inline
             app.Use(async (context, next) => {
-                
+
+                // Httpcontext.items 
+                context.Items["MyContextItemName"] = "My context item name";
+
                 await next();
 
                 string redirect = context.Response.Headers["X-Redirect"];

@@ -68,6 +68,7 @@ namespace WebApp2._0.Controllers
             //var name = ((IDataService)this.HttpContext.RequestServices.GetService(typeof(IDataService))).GetName();
             ViewData["Message"] = $"Your contact page. Name:  {name}";
             ViewData["MySessionName"] = HttpContext.Session.GetString(SessionKeyName);
+            ViewData["MyContextItemName"] = HttpContext.Items["MyContextItemName"];
 
             return View();
         }
