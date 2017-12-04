@@ -34,7 +34,8 @@ namespace WebApp2._0
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
+            services.AddMvc()
+                .AddSessionStateTempDataProvider();
 
             //services.AddScoped<IDataService, DataService>();
             //services.AddTransient<IDataService, DataService>();
@@ -56,6 +57,8 @@ namespace WebApp2._0
             //services.AddSingleton<IFileProvider>(physicalProvider);
             //services.AddSingleton<IFileProvider>(embeddedProvider);
             services.AddSingleton<IFileProvider>(compositeProvider);
+
+            services.AddSession();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -78,6 +81,8 @@ namespace WebApp2._0
                 FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Files/images")),
                 RequestPath = new PathString("/StaticFiles")
             });
+
+            app.UseSession();
 
             app.UseEncodeUri();
 

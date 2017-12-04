@@ -46,6 +46,9 @@ namespace WebApp2._0.Controllers
             ViewData["MyDataFileName"] = myDataFile.Exists ? myDataFile.PhysicalPath : string.Empty;
             IFileInfo myEmbeddedFile = _fileProvider.GetFileInfo("Embedded.MyEmbedded.txt");
             ViewData["MyEmbeddedDataName"] = myEmbeddedFile.Exists ? myEmbeddedFile.Name : string.Empty;
+
+            TempData["MyTempDataName"] = "My Temporary Data Name";
+
             return View(viewModel);
         }
 
