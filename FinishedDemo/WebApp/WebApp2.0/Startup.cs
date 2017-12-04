@@ -138,6 +138,13 @@ namespace WebApp2._0
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 
+            app.UseStatusCodePages(async context => {
+                context.HttpContext.Response.ContentType = "text/plain";
+                await context.HttpContext.Response.WriteAsync(
+                    "Status code page, status code: " +
+                    context.HttpContext.Response.StatusCode);
+            });
+
             //custom routing
             app.UseRouter(routes => {
                 routes.MapGet("test/{id:int}", context => {
