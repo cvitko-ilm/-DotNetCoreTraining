@@ -16,17 +16,22 @@ using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.Extensions.FileProviders;
 using System.Reflection;
 using System.IO;
+using Microsoft.Extensions.Logging;
 
 namespace WebApp2._0
 {
     public class Startup
     {
         private IHostingEnvironment _hostingEnvironment;
+        private ILogger _logger;
+        private ILogger _logger2;
 
-        public Startup(IConfiguration configuration, IHostingEnvironment env)
+        public Startup(IConfiguration configuration, IHostingEnvironment env, ILogger<Startup> logger, ILoggerFactory loggerFactory)
         {
             Configuration = configuration;
             _hostingEnvironment = env;
+            _logger = logger;
+            _logger2 = loggerFactory.CreateLogger("CustomCategory");
         }
 
         public IConfiguration Configuration { get; }
@@ -103,6 +108,9 @@ namespace WebApp2._0
                 if (!string.IsNullOrWhiteSpace(redirect)) {
                     //context.Response.Headers.Add("X-nonsense", "pure nonsense");
                     Debug.WriteLine($"***** X-Redirect found value: {redirect}");
+                    _logger.LogDebug($"***** Debug: X-Redirect found value: {redirect}");
+                    _logger2.LogDebug($"***** CustomCat: X-Redirect found value: {redirect}");
+
                 }
             });
 
