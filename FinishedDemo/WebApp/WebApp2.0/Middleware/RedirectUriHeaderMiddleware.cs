@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Globalization;
 using Microsoft.AspNetCore.Builder;
+using System.Diagnostics;
 
 namespace WebApp2_0.Middleware
 {
@@ -17,15 +18,18 @@ namespace WebApp2_0.Middleware
             _next = next;
         }
 
-        public Task Invoke(HttpContext context)
+        public async Task Invoke(HttpContext context)
         {
+            Debug.WriteLine("Start custom middleware");
             var currentUrl = $"{context.Request.Host}{context.Request.Path}";
 
             if (!string.IsNullOrWhiteSpace(currentUrl)) {
-                context.Response.Headers.Add("X-Redirect",currentUrl);
+                context.Response.Headers.Add("X-Redirect", currentUrl);
             }
 
-            return this._next(context);
+            await this._next(context);
+
+            Debug.WriteLine("Back from end of middleware");
         }
     }
 
